@@ -11,6 +11,8 @@ public interface ProuctRepository extends JpaRepository<Product, Integer>{
 
 	@Query("SELECT c FROM Product c WHERE c.active = true")
 	public List<Product> findAllEnabled();
+	@Query("SELECT c FROM Product c WHERE c.active = true and c.addedToCart = false")
+	public List<Product> findAllEnabledAndStore();
 	@Query("SELECT c FROM Product c WHERE c.active = false")
 	public List<Product> findAllDissabled();
 }

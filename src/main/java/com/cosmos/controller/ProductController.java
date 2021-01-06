@@ -1,6 +1,5 @@
 package com.cosmos.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cosmos.model.Product;
+import com.cosmos.model.Products;
 import com.cosmos.service.ProductService;
 
 @RestController
@@ -21,32 +21,40 @@ import com.cosmos.service.ProductService;
 public class ProductController {
 	@Autowired
 	private ProductService productService;
-	
-	@GetMapping("/deleted")
-	public List<Product> getAllDeletedProducts(){
-		return productService.getAllDeletedProducts();
-	}
+		
 	@GetMapping("/{productId}")
 	public Optional<Product> getProductById(@PathVariable int productId) {
 		return productService.getProductById(productId);
 	}
+	
 	@GetMapping
-	public List<Product> getAllProducts(){
+	public Products getAllProducts(){
 		return productService.getAllProducts();
+	}
+	@GetMapping("/store")
+	public Products getAllStreProducts(){
+		return productService.getAllStoreProducts();
+	}
+	@GetMapping("/deleted")
+	public Products getAllDeletedProducts(){
+		return productService.getAllDeletedProducts();
 	}
 	
 	@PostMapping
 	public Product saveProduct(@RequestBody Product product) {
 		return productService.saveProduct(product);
 	}
-	@PutMapping("/update/{productId}")
-	public Product updateProduct(@PathVariable int productId,@RequestBody Product product) {
-		return productService.updateProduct(productId,product);
-	}
+	
 	@PostMapping("/clone")
 	public Product cloneProduct(@RequestBody Product product) {
 		return productService.cloneProduct(product);
 	}
+	
+	@PutMapping("/update/{productId}")
+	public Product updateProduct(@PathVariable int productId,@RequestBody Product product) {
+		return productService.updateProduct(productId,product);
+	}
+	
 	@DeleteMapping("/{productId}")
 	public String deleteProduct(@PathVariable int productId) {
 		return productService.deleteProduct(productId);

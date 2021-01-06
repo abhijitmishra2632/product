@@ -27,7 +27,16 @@ public class Product {
 	private int productSellingPrice;
 	private boolean active;
 	private LocalDate now;
+	private boolean addedToCart;
 		
+	public boolean isAddedToCart() {
+		return addedToCart;
+	}
+
+	public void setAddedToCart(boolean addedToCart) {
+		this.addedToCart = addedToCart;
+	}
+
 	public String getProductStore() {
 		return productStore;
 	}

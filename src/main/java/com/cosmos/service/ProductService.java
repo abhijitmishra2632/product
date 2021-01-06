@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cosmos.model.Product;
+import com.cosmos.model.Products;
 import com.cosmos.repository.ProuctRepository;
 
 @Service
@@ -21,16 +22,18 @@ public class ProductService {
 	public Product saveProduct(Product product) {
 		product.setActive(true);
 		product.setNow(LocalDate.now());
+		product.setAddedToCart(false);
 		return productRepository.save(product);
 	}
 
-	public List<Product> getAllProducts() {
+	public Products getAllProducts() {
 		// TODO Auto-generated method stub
-		return productRepository.findAllEnabled();
+		Products products = new Products();
+		products.setProducts(productRepository.findAllEnabled());
+		return products;
 	}
 
 	public Product updateProduct(int productId, Product product) {
-		System.out.println("Inside product update");
 		return productRepository.save(product);
 	}
 
@@ -38,6 +41,7 @@ public class ProductService {
 		System.out.println(product.toString());
 		product.setProductId(0);
 		product.setNow(LocalDate.now());
+		product.setAddedToCart(false);
 		return productRepository.save(product);
 	}
 
@@ -56,9 +60,10 @@ public class ProductService {
 		return productRepository.findById(productId);
 	}
 
-	public List<Product> getAllDeletedProducts() {
-		// TODO Auto-generated method stub
-		return productRepository.findAllDissabled();
+	public Products getAllDeletedProducts() {
+		Products products = new Products();
+		products.setProducts(productRepository.findAllDissabled());
+		return products;
 	}
 
 	public String undoProduct(int productId) {
@@ -68,6 +73,13 @@ public class ProductService {
 		productRepository.save(product);
 		String response = "Successfully undone the product "+product.getProductName() ;
 		return response;
+	}
+
+	public Products getAllStoreProducts() {
+		// TODO Auto-generated method stub
+		Products products = new Products();
+		products.setProducts(productRepository.findAllEnabledAndStore());
+		return products;
 	}
 
 }
