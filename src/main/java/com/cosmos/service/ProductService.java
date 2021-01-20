@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import com.cosmos.model.Products;
 import com.cosmos.repository.ProuctRepository;
 
 @Service
+@Slf4j
 public class ProductService {
 	@Autowired
 	private ProuctRepository productRepository;
@@ -28,9 +30,12 @@ public class ProductService {
 
 	public Products getAllProducts() {
 		// TODO Auto-generated method stub
-		Products products = new Products();
-		products.setProducts(productRepository.findAllEnabled());
-		return products;
+		log.info("getAllProducts called");
+		Products product = new Products();
+		List<Product> products = productRepository.findAllEnabled();
+		log.info("Number of active products =" +products.size());
+		product.setProducts(products);
+		return product;
 	}
 
 	public Product updateProduct(int productId, Product product) {
