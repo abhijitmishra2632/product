@@ -1,5 +1,6 @@
 package com.cosmos.controller;
 
+import java.io.FileNotFoundException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,10 @@ public class ProductController {
 	@DeleteMapping("/undo/{productId}")
 	public String undoProduct(@PathVariable int productId) {
 		return productService.undoProduct(productId);
+	}
+
+	@GetMapping("/readCsv")
+	public String readCsv() throws FileNotFoundException {
+		return productService.readCsv();
 	}
 }

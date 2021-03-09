@@ -1,9 +1,13 @@
 package com.cosmos.service;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import com.cosmos.pojo.ProductPojo;
+import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -87,4 +91,28 @@ public class ProductService {
 		return products;
 	}
 
+	public String readCsv() throws FileNotFoundException {
+		String path ="D:\\AngulCosmosProject\\ProductList.csv";
+		List<ProductPojo> beans = new CsvToBeanBuilder(new FileReader(path))
+				.withType(ProductPojo.class)
+				.build()
+				.parse();
+		beans.forEach(s->{
+			Product product = new Product();
+			product.setProductName(s.getProductName());
+			product.setProductUnit(s.getProductType());
+			Optional<String> productAmount = Optional.of(s.getProductAmount());
+			Optional<String> ProductMRP = Optional.of(s.getProductMRP());
+			Optional<String> ProductRealPrice = Optional.of(s.getProductRealPrice());
+			Optional<String> ProductSellingPrice = Optional.of(s.getProductSellingPrice());
+			productAmount.ifPresent(sp->product.setProductAmount(Float.parseFloat(s.getProductAmount())));
+			ProductMRP.ifPresent(sp->product.setProductMRP(Float.parseFloat(s.getProductMRP())));
+			ProductRealPrice.ifPresent(sp->product.setProductRealPrice(Float.parseFloat(s.getProductRealPrice())));
+			ProductSellingPrice.ifPresent(sp->product.setProductSellingPrice(Float.parseFloat(s.getProductSellingPrice())));
+			product.setActive(true);
+			System.out.println(product);
+			productRepository.save(product);
+		});
+		return "Success";
+	}
 }
